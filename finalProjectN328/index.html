@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>N328 Visualizating Information Final Project</title>
+   <link rel="stylesheet" href="style.css">
+<script src="https://d3js.org/d3.v5.min.js"></script>
+    <!--<style>
+    .rect:hover { opacity: 0.5; }
+  </style-->
+
+</head>
+<body>
+
+  <div class=contenedor style="align-items: start;">
+
+    <svg id=demo2 x=50 width=1000 height=75>
+        <text id="demo2TextName" x=10 y=100 text-align="left" fill="red"></text>
+        <text id="demo2TextOccupation" x=10 y=125 text-align="left"></text>
+        <text id="demo2TextNote" x=10 y=150 text-align="left"></text>
+        <h3>👆🏾Click for more info</h3>
+    </svg>
+    <h2>Does US economy recessions affect the growing of Startbucks franchises over the years?</h2>
+    <img src="starbucks-416x416.png" alt="starbucks" style="width:166px; height:166px;" class="center">
+  <div id=d3-container style="align-items: start;">
+    </div>
+
+<p class=parg1> Is there any relation between the opening of Starbucks Franchises and USA recessions?</p>
+<p> By creating a bar chart in ascending order by the years, I was able to see how everytime the contry is in the middle of a recession,<br> the number of new Starbucks franchise drastically descrease.
+<ul>
+  <li>Recession of 1980 to 1982</li>
+  <li>Recession of 1990</li>
+  <li>Recession of 2001</li>
+  <li>Recession of 2008-2007</li>
+  <li>Recession of 2020</li>
+
+
+  <script src="index.js"></script>
+
+  <script>
+
+var people = [
+  ["Click on the buttons to find out more info"," ", " "," "],
+    ["Recession", "1980", "Startbuck was not yet open",
+    "Cause by the rise of the interses rates to combat inflaction"],
+    ["Recession", "1990", "No store opened from 1989 until 1991",
+    "Cause by the saving and loan crisis"],
+    ["Recession", "2001", "Starbuks opened 4 store less than previous year",
+    "Cause by the rise and fall of of the .com business, affected by Y2K"],
+    ["Recession", "2008-2009", "The opening of franchise drop drastically,350 less store in 2008, 356 less store in 2009 and 42 less stores in 2010",
+    "Cause by the mortgage crisis, which triggered a global bank credit crisis"],
+    ["Recession", "2020", "From 2020 to 2021 Startbucks builded 300 less store than the previous year. The hihgest drop since the recession of 2008",
+    "Cause by the lost of over 20 million jobs due to the uncertainty of the pandemic"]
+];
+
+var dispatchPeople = d3.dispatch("show");
+
+var previousCircle;
+var textSelection = d3.select("#demo2").selectAll("text");
+
+dispatchPeople.on("show.color", function(first, last, occupation, note){
+    if (previousCircle)
+    	d3.select(previousCircle).attr("fill", "black");
+    this.attr("fill", "#003B6F");
+    previousCircle = this.node();
+});
+dispatchPeople.on("show.name", function(first, last, occupation, note){
+	textSelection
+   		.data([" " + first + " " + last, " " + occupation, " " + note])
+   		.text((d) => d);
+});
+
+d3.select("#demo2")
+    .selectAll()
+    .data(people)
+    .join("circle")
+    .attr("cx", (d,i) => i * 40 + 20)
+    .attr("cy", 50)
+    .attr("r", 15)
+    .attr("fill", "black")
+    .on("click", function(d){
+    	d3.select("#demo2").attr("height", 200);
+        //dispatchPeople.call("show", d3.select(this), d[0], d[1], d[2]);
+        dispatchPeople.apply("show", d3.select(this), d);
+    });
+</script>
+</div>
+  </body>
+  </html>
